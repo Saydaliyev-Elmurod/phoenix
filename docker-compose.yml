@@ -1,0 +1,58 @@
+services:
+
+  phoenix:
+    container_name: phoenix
+    image: phoenix:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        version: ${VERSION}
+    environment:
+      POSTGRES_SERVER: localhost:5434
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    network_mode: host
+    volumes:
+      - ./build/libs/phoenix-${VERSION}.jar:/phoenix.jar
+
+
+
+
+#  postgres:
+#    container_name: postgres
+#    hostname: postgres
+#    image: postgres:15.5
+#    restart: always
+#    environment:
+#      POSTGRES_DB: lamenu
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: secret
+#      DB_SCHEMAS: "phoenix"
+#      PGPORT: 5434
+#      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+#      POSTGRES_MAX_CONNECTIONS: 200
+#      POSTGRES_SHARED_BUFFERS: 512MB
+#      POSTGRES_EFFECTIVE_CACHE_SIZE: 2GB
+#      POSTGRES_MAINTENANCE_WORK_MEM: 256MB
+#      POSTGRES_CHECKPOINT_COMPLETION_TARGET: 0.9
+#      POSTGRES_WAL_BUFFERS: 16MB
+#      POSTGRES_DEFAULT_STATISTICS_TARGET: 100
+#      POSTGRES_RANDOM_PAGE_COST: 1.1
+#      POSTGRES_EFFECTIVE_IO_CONCURRENCY: 200
+#      POSTGRES_WORK_MEM: 16MB
+#      POSTGRES_MIN_WAL_SIZE: 1GB
+#      POSTGRES_MAX_WAL_SIZE: 4GB
+#      POSTGRES_MAX_WORKERS: 8
+#      POSTGRES_MAX_PARALLEL_WORKERS: 4
+#    ports:
+#      - "5434:5434"
+#    volumes:
+#      - postgres_volume:/var/lib/postgresql/data/
+#      - ./create_schemas.sh:/docker-entrypoint-initdb.d/create_schemas.sh
+#
+#
+#volumes:
+#  postgres_volume:
+
