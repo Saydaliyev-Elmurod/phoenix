@@ -1,17 +1,13 @@
 package com.example.phoenix.model.mapper;
 
-import com.example.phoenix.domain.BookEntity;
 import com.example.phoenix.domain.OrderCartItemEntity;
 import com.example.phoenix.domain.OrderEntity;
 import com.example.phoenix.model.UserPrincipal;
-import com.example.phoenix.model.request.BookRequest;
-import com.example.phoenix.model.request.CartItem;
+import com.example.phoenix.model.response.CartItem;
 import com.example.phoenix.model.request.OrderRequest;
-import com.example.phoenix.model.request.OrderResponse;
-import com.example.phoenix.model.response.BookResponse;
+import com.example.phoenix.model.response.OrderResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 

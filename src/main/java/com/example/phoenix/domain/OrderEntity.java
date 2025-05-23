@@ -29,10 +29,9 @@ public class OrderEntity {
   private String userLastName;
   private String userPhone;
 
-  @JdbcTypeCode(SqlTypes.JSON)
-  private List<BookResponse> books;
-
   private String comment;
+  private Double totalPrice;
+  private Boolean isPaid = Boolean.FALSE;
 
   @CreatedDate private Instant createdDate = Instant.now();
   private Boolean deleted = Boolean.FALSE;

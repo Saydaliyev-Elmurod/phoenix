@@ -1,9 +1,9 @@
 package com.example.phoenix.api;
 
 import com.example.phoenix.model.UserPrincipal;
+import com.example.phoenix.model.request.OrderPaidRequest;
 import com.example.phoenix.model.request.OrderRequest;
-import com.example.phoenix.model.request.OrderResponse;
-import com.example.phoenix.model.response.BookResponse;
+import com.example.phoenix.model.response.OrderResponse;
 import com.example.phoenix.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,13 +43,11 @@ public class OrderController {
     return orderService.findAll();
   }
 
-//  @PutMapping("/paid")
-//  public OrderResponse update(
-//      @PathVariable("id") final UUID id,
-//      @AuthenticationPrincipal UserPrincipal userPrincipal,
-//      @RequestBody OrderRequest request) {
-//    return orderService.updateById(id, userPrincipal, request);
-//  }
+  @PutMapping("/paid")
+  public OrderResponse update(@RequestBody OrderPaidRequest request) {
+    return orderService.paidOrder(request);
+  }
+
 
 
 }

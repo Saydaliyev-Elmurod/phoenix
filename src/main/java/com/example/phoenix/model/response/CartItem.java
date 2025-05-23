@@ -1,6 +1,5 @@
-package com.example.phoenix.model.request;
+package com.example.phoenix.model.response;
 
-import com.example.phoenix.model.response.BookResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.UUID;

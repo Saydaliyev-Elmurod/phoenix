@@ -1,17 +1,16 @@
 package com.example.phoenix.service;
 
+import com.example.phoenix.context.exception.InvalidOperationException;
 import com.example.phoenix.context.exception.NotFoundException;
 import com.example.phoenix.context.exception.handler.ErrorCode;
-import com.example.phoenix.domain.BookEntity;
 import com.example.phoenix.domain.OrderEntity;
 import com.example.phoenix.model.UserPrincipal;
 import com.example.phoenix.model.mapper.BookMapper;
 import com.example.phoenix.model.mapper.OrderMapper;
-import com.example.phoenix.model.request.CartItem;
-import com.example.phoenix.model.request.OrderBookRequest;
-import com.example.phoenix.model.request.OrderRequest;
-import com.example.phoenix.model.request.OrderResponse;
+import com.example.phoenix.model.request.*;
 import com.example.phoenix.model.response.BookResponse;
+import com.example.phoenix.model.response.CartItem;
+import com.example.phoenix.model.response.OrderResponse;
 import com.example.phoenix.repository.BookRepository;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +96,24 @@ public class OrderService {
     if (order == null) {
       throw new NotFoundException(ErrorCode.ORDER_NOT_FOUND, "Order not found");
     }
+    return OrderMapper.INSTANCE.toResponse(
+        order,
+        orderCartItemRepository.findByOrderIdAndDeletedFalse(order.getId()).stream()
+            .map(OrderMapper.INSTANCE::toCartItem)
+            .toList());
+  }
+
+  public OrderResponse paidOrder(OrderPaidRequest request) {
+    OrderEntity order = orderRepository.findByIdAndDeletedIsFalse(request.orderId());
+    if (order == null) {
+      throw new NotFoundException(ErrorCode.ORDER_NOT_FOUND, "Order not found");
+    }
+    if (Boolean.TRUE.equals(order.getIsPaid())) {
+      throw new InvalidOperationException(ErrorCode.ORDER_ALREADY_PAID, "Order already paid");
+    }
+    order.setIsPaid(Integer.parseInt("" + request.cardNumber().charAt(15)) % 2 == 0);
+    orderRepository.save(order);
+
     return OrderMapper.INSTANCE.toResponse(
         order,
         orderCartItemRepository.findByOrderIdAndDeletedFalse(order.getId()).stream()
