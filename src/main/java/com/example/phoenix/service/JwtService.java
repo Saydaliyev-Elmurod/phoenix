@@ -32,13 +32,8 @@ public class JwtService {
     return generateToken(new HashMap<>(), sub, iss, expiration);
   }
 
-  public String generateToken(
-      UUID userId, UUID deviceId, UUID sessionId, String iss, Long expiration) {
-    return generateToken(
-        Map.of("userId", userId, "deviceId", deviceId, "sessionId", sessionId),
-        userId.toString(),
-        iss,
-        expiration);
+  public String generateToken(UUID userId, String iss, Long expiration) {
+    return generateToken(Map.of("userId", userId), userId.toString(), iss, expiration);
   }
 
   public boolean isTokenValid(String token, String sub) {

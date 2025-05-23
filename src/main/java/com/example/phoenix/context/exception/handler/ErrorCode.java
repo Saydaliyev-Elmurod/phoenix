@@ -3,6 +3,8 @@ package com.example.phoenix.context.exception.handler;
 public enum ErrorCode {
   API_ERROR_CODE(1000), // == // -------------------------------------------------------
   ALREADY_EXISTS_ERROR_CODE(1100), // ==
+  USER_ALREADY_EXISTS(1100),
+  BOOK_NOT_FOUND(123),// ==
   ALREADY_EXISTS_SUB_ERROR_CODE(1100), // ==
   USER_PHONE_EXIST(1100), // == // user exist with this number
   ALREADY_PAID_ORDER(1100), // ==

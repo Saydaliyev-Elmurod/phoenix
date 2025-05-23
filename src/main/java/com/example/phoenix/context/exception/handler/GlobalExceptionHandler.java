@@ -16,6 +16,7 @@ import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -133,6 +134,15 @@ public class GlobalExceptionHandler {
       return new ResponseEntity<>(e.getExceptionResponse(), BAD_REQUEST);
     }
     return constructExceptionResponse(e, request, BAD_REQUEST, e.getCode());
+  }
+
+  @ResponseStatus(FORBIDDEN)
+  @ExceptionHandler({
+    AuthorizationDeniedException.class,
+  })
+  public final ResponseEntity<?> handleForbiddenException(
+      final AuthorizationDeniedException e, final WebRequest request) {
+    return constructExceptionResponse(e, request, FORBIDDEN, ErrorCode.FORBIDDEN_ERROR_CODE);
   }
 
   @ResponseStatus(FORBIDDEN)

@@ -41,11 +41,11 @@ spring:
     open-in-view: false
 
   liquibase:
-    url: jdbc:postgresql://${POSTGRES_SERVER:localhost:5434}/lamenu
+    url: jdbc:postgresql://${POSTGRES_SERVER:localhost:5434}/postgres
     user: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:secret}
     change-log: classpath:db.migration/db.changelog-master.yaml
-    liquibase-schema: user
+    liquibase-schema: phoenix
     enabled: true
   codec:
     max-in-memory-size: 16MB
@@ -56,23 +56,10 @@ spring:
 
 springdoc:
   api-docs:
-    path: /api/users/v3/api-docs
+    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, prometheus
-      base-path: /api/users/actuator
-  endpoint:
-    prometheus:
-      enabled: true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
 
 info:
   app:

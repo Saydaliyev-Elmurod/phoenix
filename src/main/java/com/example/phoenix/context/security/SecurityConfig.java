@@ -35,55 +35,17 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             exchangeSpec ->
                 exchangeSpec
-                    .requestMatchers("/api/users/v1/users/login")
+                    .requestMatchers("/api/v1/users/login")
                     .permitAll()
-                    .requestMatchers(
-                        "/api/users/v1/drivers/login",
-                        "/api/users/v1/platform/login",
-                        "/api/users/v1/users/system/login")
+                    .requestMatchers("/v3/api-docs/**")
                     .permitAll()
-                    .requestMatchers(
-                        "/api/users/v1/merchant/admin/qr/generate",
-                        "/api/users/v1/merchant/admin/qr/check")
+                    .requestMatchers("/v3/api-docs.yaml")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users/v1/users/code")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users/v1/users/verify")
-                    .permitAll()
-                    .requestMatchers("/api/users/v1/local/**")
-                    .permitAll()
-                    .requestMatchers("/api/users/v1/merchants/join")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchants")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchants/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/city-merchant/merchant/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/branches")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/branches/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchant/settings/mobile/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchant/settings/web/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchant/settings/qr/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/users/v1/merchant/settings/telegram/**")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "api/users/v1/click/**")
-                    .permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "api/users/v1/analytics-setting",
-                        "api/users/v1/analytics-setting**")
+                    .requestMatchers("/swagger-ui/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui.html")
                     .permitAll()
-                    .requestMatchers("/swagger-ui/**", "/api/users/actuator/**")
-                    .permitAll()
-                    .requestMatchers("/api/users/v3/api-docs/**")
+                    .requestMatchers("/v3/api-docs", "/v3/api-docs/**")
                     .permitAll())
         .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
         .sessionManagement(

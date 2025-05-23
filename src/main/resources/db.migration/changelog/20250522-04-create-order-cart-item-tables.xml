@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="create-tables" author="elmurod">
+        <sql>
+            CREATE TABLE phoenix.order_cart_item
+            (
+                id                 UUID PRIMARY KEY   default uuid_generate_v4
+                                                              (
+                                                              ),
+                order_id           UUID      NOT NULL,
+                book_id            UUID      NOT NULL,
+                count              INTEGER,
+                book               JSONB,
+                created_date       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                deleted            BOOLEAN   NOT NULL DEFAULT FALSE,
+                last_modified_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,4 +1,4 @@
-package com.example.phoenix.model;
+package com.example.phoenix.model.response;
 
 import java.time.Instant;
 import java.util.UUID;

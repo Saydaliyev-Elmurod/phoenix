@@ -1,4 +1,4 @@
-package com.example.phoenix.model;
+package com.example.phoenix.model.mapper;
 
 import java.time.Instant;
 

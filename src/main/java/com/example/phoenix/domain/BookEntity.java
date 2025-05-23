@@ -14,24 +14,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(schema = Constants.SCHEMA, name = Constants.TABLE_USER)
-public class UserEntity {
+@Table(schema = Constants.SCHEMA, name = Constants.TABLE_BOOK)
+public class BookEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String firstName;
-  private String lastName;
-  private Instant birthday;
-  private String phone;
-  private String password;
-  @Enumerated(EnumType.STRING)
-  private Role role;
-  private Boolean isBlocked = Boolean.FALSE;
+  private String image;
+  private String name;
+  private Double price;
+  private String description;
 
   @CreatedDate private Instant createdDate = Instant.now();
   private Boolean deleted = Boolean.FALSE;
   @LastModifiedDate private Instant lastModifiedDate = Instant.now();
-  @Version private Long version = 0L;
 }

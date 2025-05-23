@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, UUID> {
   UserEntity findByIdAndDeletedIsFalse(final UUID id);
+  UserEntity findByPhoneAndDeletedFalse(final String phone);
 }

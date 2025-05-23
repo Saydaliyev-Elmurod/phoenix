@@ -1,8 +1,10 @@
 package com.example.phoenix.context.security;
 
+import com.example.phoenix.context.exception.ForbiddenException;
+import com.example.phoenix.context.exception.handler.ErrorCode;
 import com.example.phoenix.domain.UserEntity;
-import com.example.phoenix.model.UserMapper;
 import com.example.phoenix.model.UserPrincipal;
+import com.example.phoenix.model.mapper.UserMapper;
 import com.example.phoenix.repository.UserRepository;
 import com.example.phoenix.service.JwtService;
 import io.jsonwebtoken.Claims;
@@ -11,11 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.bouncycastle.util.encoders.Base64;
-
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -63,19 +63,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       final var userId = UUID.fromString(claims.get("userId", String.class));
       if (jwtService.isTokenValid(jwt, userId.toString())) {
         UserEntity user = userRepository.findByIdAndDeletedIsFalse(userId);
+        if (user != null) {
+          if (Boolean.TRUE.equals(user.getIsBlocked())) {
+            throw new ForbiddenException(ErrorCode.USER_BLOCKED_ERROR_CODE, "user is blocked");
+            //            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            //            filterChain.doFilter(request, response);
+            //            return;
+          }
+          SecurityContext context = SecurityContextHolder.createEmptyContext();
+          final Collection<? extends GrantedAuthority> authorities =
+              List.of(new SimpleGrantedAuthority(user.getRole().name()));
 
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        final Collection<? extends GrantedAuthority> authorities =
-            Arrays.stream(user.getRole().split(",")).map(SimpleGrantedAuthority::new).toList();
-
-        UsernamePasswordAuthenticationToken authToken =
-            new UsernamePasswordAuthenticationToken(
-                new UserPrincipal(UserMapper.INSTANCE.toResponse(user), authHeader),
-                null,
-                authorities);
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        context.setAuthentication(authToken);
-        SecurityContextHolder.setContext(context);
+          UsernamePasswordAuthenticationToken authToken =
+              new UsernamePasswordAuthenticationToken(
+                  new UserPrincipal(UserMapper.INSTANCE.toResponse(user), authHeader),
+                  null,
+                  authorities);
+          authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          context.setAuthentication(authToken);
+          SecurityContextHolder.setContext(context);
+        }
       }
     }
     filterChain.doFilter(request, response);
